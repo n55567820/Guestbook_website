@@ -1,0 +1,47 @@
+{% extends "base_generic.html" %}
+{% block content %}
+  <main role="main" class="flex-shrink-0 ">
+    <div class="container">
+      <h2 class="mt-5">[{{ article.get_type_display }}] {{ article.title }}</h2>
+      <p class="blog-post-meta text-muted"> {{ article.last_update }}   by {{ article.user.first_name }}({{ article.user.username }})</p>
+      <hr>
+      <p class="lead text-dark">{{ article.content }}</p>
+    </div>
+    <br/><br/><br/>
+    <div class="container">
+      <hr>
+      {% for comment in comments %}
+        <div class="bbs-comment">
+          <span class="lead text-dark">
+              {{ comment.comment_user.first_name }} ({{ comment.comment_user }}) : {{ comment.comment_content }}
+          </span>
+          {% if comment.comment_user == user %}
+          <a href="/post/articles/{{ article.id }}/edit_comment/{{ comment.id }}">改</a>
+          <a href="/post/articles/{{ article.id }}/del_comment/{{ comment.id }}">刪</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <br/>
+      {% if request.user.is_authenticated %}
+        <form method="POST" action="/post/articles/{{ article.id }}/new_comment" >{% csrf_token %}
+          {{ form.comment_content }}
+          <br/>
+          <button class="btn btn-primary" type="submit">
+            留言
+          </button>
+        </form>
+      {% else %}
+          <a href="/accounts/login">登入回覆</a>
+      {% endif %}
+
+    </div>
+  </main>
+  <footer class="text-muted bg-white">
+    <div class="container">
+      <div class="container">
+        <span class="float-lg-right"><a href="/post/">Back to home</a></span>
+      </div>
+      <br/>
+    </div>
+  </footer>
+{% endblock %}

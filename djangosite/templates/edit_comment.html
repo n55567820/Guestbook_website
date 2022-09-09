@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+{% block content %}
+  <main role="main" class="flex-shrink-0 ">
+    <div class="container">
+        <br/>
+      <span class="lead text-dark">
+        原來的留言： {{ comment.comment_content }}
+      </span>
+    </div>
+      <br/>
+    <div class="container">
+      <form method="POST" action="/post/articles/{{ a_id }}/edit_comment/{{ comment.id }}">{% csrf_token %}
+        {{ form.comment_content }}
+        <br/>
+        <button class="btn btn-primary" type="submit">
+          編輯
+        </button>
+      </form>
+    </div>
+  </main>
+  <footer class="text-muted bg-white">
+    <div class="container">
+      <div class="container">
+        <span class="float-lg-right"><a href="/post/">Back to home</a></span>
+      </div>
+      <br/>
+    </div>
+  </footer>
+{% endblock %}

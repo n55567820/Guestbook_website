@@ -1,0 +1,108 @@
+{% extends "base_generic.html" %}
+{% block content %}
+    <header>
+      <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-8 col-md-7 py-4">
+              <h4><a class="text-white">About</a></h4>
+              <p class="text-muted">歡迎來到這裡，可以試著在這留言!!</p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+              <h4 class="text-white"></h4>
+              <ul class="list-unstyled">
+                {% if user.is_authenticated %}
+                  <li><a href="/post/articles/create" class="text-white">新增留言</a></li>
+                  <li><a href="/accounts/password/reset" class="text-white">變更密碼</a></li>
+                {% else %}
+                  <li><a href="/accounts/login" class="text-white">登入</a></li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container d-flex justify-content-between">
+          <a href=" " class="navbar-brand d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="mr-2" viewBox="0 0 24 24" focusable="false"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <strong>Guestbook</strong>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main role="main">
+      <div class="bg-white">
+        {% if not user.is_authenticated %}
+        <section class="jumbotron text-center">
+          <div class="container">
+            <h1>Welcome !!</h1>
+            <p class="lead text-muted"> Please Sign Our Guestbook</p>
+            <p>
+              <a href="/post/signup" class="btn btn-primary my-2">註冊</a>
+              <a href="/accounts/login" class="btn btn-secondary my-2">登入</a>
+            </p>
+          </div>
+        </section>
+        {% else %}
+        <section class="jumbotron text-center">
+          <div class="container">
+            <h1>Hello , {{ user.first_name }} </h1>
+            <p class="lead "> write something great with me </p>
+            <p>
+              <a href="/post/articles/create" class="btn btn-primary my-2">留言</a>
+              <a href="/accounts/logout" class="btn btn-secondary my-2">登出</a>
+            </p>
+          </div>
+        </section>
+        {% endif %}
+      </div>
+      <div class="album py-5  bg-light">
+          <div class="container">
+            <div class="row">
+              {% for a in articles %}
+              <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                  <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#fff769"/><text x="50%" y="50%" fill="#222324" dy=".3em">
+                    [{{ a.get_type_display }}] {{ a.user.first_name }}({{ a.user.username }}) 撰寫 </text></svg>
+                  <div class="card-body">
+                    <p class="card-text">標題: {{ a.title }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="javascript:location.href='/post/articles/{{ a.id }}'">觀看</button>
+                        {% if a.user == user %}
+                          <button type="button" class="btn btn-sm btn-outline-secondary" onclick="javascript:location.href='/post/articles/edit/{{ a.id }}'">編輯</button>
+                          <form method="post" action="/post/articles/delete/{{ a.id }}"> {% csrf_token %}
+                            <input class="btn btn-sm btn-outline-secondary" type="submit" value="刪除">
+                          </form>
+                        {% endif %}
+                      </div>
+                      <!--
+                      <form id="article-del-form" method="POST" action="/blog/articles/delete/{{ a.id }}">{% csrf_token %}
+                        <input type="hidden" name="id" value="{{ a.id }}">
+                      </form>
+                      -->
+                      <small class="text-muted">{{ a.last_update }}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+    </main>
+    <footer class="text-muted bg-white">
+      <div class="container">
+        <p class="float-right">
+          <a href="#">Back to top</a>
+        </p>
+        <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+        <p>New to Bootstrap? <a href="https://getbootstrap.com/">Visit the homepage.</p>
+      </div>
+    </footer>
+{% endblock %}
+
