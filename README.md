@@ -7,7 +7,7 @@ https://guestbookwebsite.herokuapp.com/post/
 
 ## 寫此專案所學習到的事情：
 
-**資料庫整合和存取與練習操作ORM**
+**資料庫整合和存取與練習ORM操作**
 
 * 在models.py中思考並設計出需要的物件
 * 整合mysql資料庫，將資料遷移到database中
