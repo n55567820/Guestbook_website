@@ -1,7 +1,6 @@
 # Guestbook_website
 
 您好，這是我所寫的一個留言板專案
-https://guestbookwebsite.herokuapp.com/post/
 
 以下是關於此專案的一些介紹 :smile:
 
